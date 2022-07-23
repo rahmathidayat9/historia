@@ -1,0 +1,161 @@
+<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+$(document).ready(function () {
+    $('#table-roles').DataTable();
+
+    $("#storeForm").submit(function(e) {
+        e.preventDefault()
+        $.ajax({
+            method: "POST",
+            url: "/roles/store",
+            dataType: "JSON",
+            data: $(this).serialize(),
+            success: function(response) {
+                if (response.error == false) {
+                    Swal.fire(
+                        'Good!',
+                        response.message,
+                        'success'
+                    )
+
+                    window.setTimeout(() => {
+                        window.location.href = ''
+                    }, 1500)
+                }else {
+                    Swal.fire(
+                        'Oops!',
+                        response.message,
+                        'error'
+                    )
+
+                    window.setTimeout(() => {
+                        window.location.href = ''
+                    }, 1500)
+                }
+            },
+            error: function(response) {
+                console.log(response)
+            },
+        })
+    })
+
+    $(document).on("click", "#btn-edit", function() {
+        const id = $(this).data('id')
+        $.ajax({
+            method: "GET",
+            url: "/roles/"+id+"/edit",
+            dataType: "JSON",
+            success: function(response) {
+                if (response.error == false) {     
+                    var editModal = new bootstrap.Modal(document.getElementById("editModal"));
+                    editModal.show();
+
+                    $("#id_edit").val(response.data.id)
+                    $("#name_edit").val(response.data.name)
+                }else {
+                    Swal.fire(
+                        'Oops!',
+                        response.message,
+                        'error'
+                    )
+
+                    window.setTimeout(() => {
+                        window.location.href = ''
+                    }, 1500)
+                }
+            },
+            error: function(response) {
+                console.log(response)
+            },
+        })
+    })
+
+    $("#updateForm").submit(function(e) {
+        e.preventDefault()
+        const id = $("#id_edit").val()
+        $.ajax({
+            type: "PUT",
+            url: "/roles/"+id,
+            dataType: "JSON",
+            data: $(this).serialize(),
+            success: function(response) {
+                if (response.error == false) {
+                    Swal.fire(
+                        'Good!',
+                        response.message,
+                        'success'
+                    )
+
+                    window.setTimeout(() => {
+                        window.location.href = ''
+                    }, 1500)
+                }else {
+                    Swal.fire(
+                        'Oops!',
+                        response.message,
+                        'error'
+                    )
+
+                    window.setTimeout(() => {
+                        window.location.href = ''
+                    }, 1500)
+                }
+            },
+            error: function(response) {
+                console.log(response)
+            },
+        })
+    })
+
+    $(document).on("click", "#btn-delete", function() {
+        const id = $(this).data('id')
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: "DELETE",
+                    url: "/roles",
+                    dataType: "JSON",
+                    data: {
+                        id: id,
+                    },
+                    success: function(response) {
+                        if (response.error == false) {
+                            Swal.fire(
+                                'Good!',
+                                response.message,
+                                'success'
+                            )
+
+                            window.setTimeout(() => {
+                                window.location.href = ''
+                            }, 1500)
+                        }else {
+                            Swal.fire(
+                                'Oops!',
+                                response.message,
+                                'error'
+                            )
+
+                            window.setTimeout(() => {
+                                window.location.href = ''
+                            }, 1500)
+                        }
+                    },
+                    error: function(response) {
+                        console.log(response)
+                    },
+                })
+            }
+        })
+    })
+});
+</script>

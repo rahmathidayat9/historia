@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <a href="/posts/create" class="btn btn-primary btn-sm"><i data-feather="plus"></i> CREATE POST</a>
+            </div>
+            <div class="card-body">
+                <table id="table-posts" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Date Post</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% posts.forEach((value, index) => { %>
+                        <tr>
+                            <td><%= index+=1 %></td>
+                            <td><%= value.title %></td>
+                            <td><%= value.createdAt %></td>
+                            <td>
+                                <a href="/posts/<%= value.id %>/detail" class="btn btn-success btn-sm">DETAIL</a>
+                                <a href="/posts/<%= value.id %>/edit" class="btn btn-primary btn-sm">EDIT</a>
+                                <a href="javascript:void(0)" id="btn-delete" data-id="<%= value.id %>" class="btn btn-danger btn-sm">DELETE</a>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

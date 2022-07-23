@@ -1,0 +1,178 @@
+<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/assets/summernote/summernote-bs5.min.js"></script>
+<script src="/assets/dropify/dist/js/dropify.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('#table-posts').DataTable();
+    $('.summernote').summernote();
+
+    $('.dropify').dropify({
+        messages: {
+            'default': 'Choose File',
+            'replace': 'Drag and drop or click to replace',
+            'remove':  'Remove',
+            'error':   'Ooops, something wrong happended.'
+        }
+    });
+
+    $(".summernote").on("summernote.enter", function(we, e) {
+        $(this).summernote("pasteHTML", "<br><br>");
+        e.preventDefault();
+    });
+
+    $("#storeForm").submit(function(e) {
+        e.preventDefault()
+        
+        var formData = new FormData(); 
+        formData.append('title', $("#title").val())
+        formData.append('category_id', $("#category_id").val())
+        formData.append('thumbnail', $('#thumbnail').prop('files')[0])
+        formData.append('body', $("#body").val())
+
+        $.ajax({
+            method: "POST",
+            url: '/posts/store',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.error == false) {
+                    Swal.fire(
+                        'Good!',
+                        response.message,
+                        'success'
+                    )
+
+                    window.setTimeout(() => {
+                        window.location.href = '/posts'
+                    }, 1500)
+                }else {
+                    Swal.fire(
+                        'Oops!',
+                        'Terjadi kesalahan!',
+                        'error'
+                    )
+
+                    window.setTimeout(() => {
+                        window.location.href = ''
+                    }, 1500)
+                }
+            },
+            error: function(response) {
+                Swal.fire(
+                    'Oops!',
+                    'Terjadi kesalahan!',
+                    'error'
+                )
+
+                window.setTimeout(() => {
+                    window.location.href = ''
+                }, 1500)
+            },
+        })
+    })
+
+    $("#updateForm").submit(function(e) {
+        e.preventDefault()
+        const id = $("#id_edit").val()
+        var formData = new FormData(); 
+        formData.append('title_edit', $("#title_edit").val())
+        formData.append('category_id_edit', $("#category_id_edit").val())
+        formData.append('thumbnail_edit', $('#thumbnail_edit').prop('files')[0])
+        formData.append('body_edit', $("#body_edit").val())
+
+        $.ajax({
+            type: "PUT",
+            url: "/posts/"+id,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.error == false) {
+                    Swal.fire(
+                        'Good!',
+                        response.message,
+                        'success'
+                    )
+
+                    window.setTimeout(() => {
+                        window.location.href = '/posts'
+                    }, 1500)
+                }else {
+                    Swal.fire(
+                        'Oops!',
+                        'Terjadi kesalahan!',
+                        'error'
+                    )
+
+                    window.setTimeout(() => {
+                        window.location.href = ''
+                    }, 1500)
+                }
+            },
+            error: function(response) {
+                Swal.fire(
+                    'Oops!',
+                    'Terjadi kesalahan!',
+                    'error'
+                )
+
+                window.setTimeout(() => {
+                    window.location.href = ''
+                }, 1500)
+            },
+        })
+    })
+
+    $(document).on("click", "#btn-delete", function() {
+        const id = $(this).data('id')
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: "DELETE",
+                    url: "/posts",
+                    dataType: "JSON",
+                    data: {
+                        id: id,
+                    },
+                    success: function(response) {
+                        if (response.error == false) {
+                            Swal.fire(
+                                'Good!',
+                                response.message,
+                                'success'
+                            )
+
+                            window.setTimeout(() => {
+                                window.location.href = ''
+                            }, 1500)
+                        }else {
+                            Swal.fire(
+                                'Oops!',
+                                response.message,
+                                'error'
+                            )
+
+                            window.setTimeout(() => {
+                                window.location.href = ''
+                            }, 1500)
+                        }
+                    },
+                    error: function(response) {
+                        console.log(response)
+                    },
+                })
+            }
+        })
+    })
+});
+</script>

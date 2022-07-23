@@ -1,0 +1,80 @@
+<div class="alert alert-primary alert-dismissible fade show" role="alert">
+    <strong>Welcome to the jungle, <%= authUser.name %>!</strong> express your real self in razorpost.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<% if(authUser.role_name == 'admin') { %>
+<div class="row">
+<div class="col-xl-3 col-sm-6 col-12"> 
+    <div class="card">
+    <div class="card-content">
+        <div class="card-body">
+        <div class="media d-flex justify-content-between">
+            <div class="align-self-center">
+            <i data-feather="users" class="icon-size-48"></i>
+            </div>
+            <div class="">
+            <h3><%= totalUsers %></h3>
+            <span>Users</span>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="col-xl-3 col-sm-6 col-12"> 
+    <div class="card">
+    <div class="card-content">
+        <div class="card-body">
+        <div class="media d-flex justify-content-between">
+            <div class="align-self-center">
+            <i data-feather="list" class="icon-size-48"></i>
+            </div>
+            <div class="">
+            <h3><%= totalRoles %></h3>
+            <span>Roles</span>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="col-xl-3 col-sm-6 col-12"> 
+    <div class="card">
+    <div class="card-content">
+        <div class="card-body">
+        <div class="media d-flex justify-content-between">
+            <div class="align-self-center">
+            <i data-feather="feather" class="icon-size-48"></i>
+            </div>
+            <div class="">
+            <h3><%= totalPosts %></h3>
+            <span>Posts</span>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="col-xl-3 col-sm-6 col-12"> 
+    <div class="card">
+    <div class="card-content">
+        <div class="card-body">
+        <div class="media d-flex justify-content-between">
+            <div class="align-self-center">
+            <i data-feather="inbox" class="icon-size-48"></i>
+            </div>
+            <div class="">
+            <h3>2</h3>
+            <span>Inbox</span>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+<% } %>

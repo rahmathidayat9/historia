@@ -1,0 +1,47 @@
+const express = require('express')
+const router = express.Router()
+const middleware = require('../middleware')
+const AuthController = require('../controllers/AuthController')
+const DashboardController = require('../controllers/DashboardController')
+const HomeController = require('../controllers/HomeController')
+const PostsController = require('../controllers/PostsController')
+const RolesController = require('../controllers/RolesController')
+const UsersController = require('../controllers/UsersController')
+const CategoriesController = require('../controllers/CategoriesController')
+
+router.get('/auth/login', middleware.guest, AuthController.login)
+router.post('/auth/login', middleware.guest, AuthController.loginPost)
+router.get('/auth/logout', middleware.auth, AuthController.logout)
+router.get('/auth/register', middleware.guest, AuthController.register)
+router.get('/dashboard', middleware.auth, DashboardController.index)
+router.get('/', HomeController.index)
+router.get('/posts', middleware.auth, PostsController.index)
+router.get('/posts/create', middleware.auth, PostsController.create)
+router.post('/posts/store', middleware.auth, PostsController.store)
+router.get('/posts/:id/detail', middleware.auth, PostsController.detail)
+router.get('/posts/:id/edit', middleware.auth, PostsController.edit)
+router.put('/posts/:id', middleware.auth, PostsController.update)
+router.delete('/posts', middleware.auth, PostsController.destroy)
+
+router.get('/roles', [
+    middleware.auth,
+    async (req, res, next) => {
+        await middleware.role(req, res, next, ['admin'])
+    }
+], RolesController.index)
+router.post('/roles/store', [middleware.auth, middleware.role], RolesController.store)
+router.get('/roles/:id/edit', [middleware.auth, middleware.role], RolesController.edit)
+router.put('/roles/:id', [middleware.auth, middleware.role], RolesController.update)
+router.delete('/roles', [middleware.auth, middleware.role], RolesController.destroy)
+router.get('/users', [middleware.auth, middleware.role], UsersController.index)
+router.post('/users/store', [middleware.auth, middleware.role], UsersController.store)
+router.get('/users/:id/edit', [middleware.auth, middleware.role], UsersController.edit)
+router.put('/users/:id', [middleware.auth, middleware.role], UsersController.update)
+router.delete('/users', [middleware.auth, middleware.role], UsersController.destroy)
+router.get('/categories', [middleware.auth, middleware.role], CategoriesController.index)
+router.post('/categories/store', [middleware.auth, middleware.role], CategoriesController.store)
+router.get('/categories/:id/edit', [middleware.auth, middleware.role], CategoriesController.edit)
+router.put('/categories/:id', [middleware.auth, middleware.role], CategoriesController.update)
+router.delete('/categories', [middleware.auth, middleware.role], CategoriesController.destroy)
+
+module.exports = router

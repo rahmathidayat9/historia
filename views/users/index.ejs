@@ -1,0 +1,128 @@
+<div class="row">
+    <div class="col-lg-12">
+        <!-- Modal Create -->
+        <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Add Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <form id="storeForm">
+                    <div class="form-group mb-3">
+                        <label for="name">Name:</label>
+                        <input required type="text" class="form-control" name="name" id="name">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="email">Email:</label>
+                        <input required type="text" class="form-control" name="email" id="email">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="password">Password:</label>
+                        <input required type="password" class="form-control" name="password" id="password">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="role_id">Role:</label>
+                        <select required class="form-control" name="role_id" id="role_id">
+                            <option selected disabled>- SELECT ROLE -</option>
+                            <% roles.forEach((value, index) => { %>
+                            <option value="<%= value.id %>"><%= value.name %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>
+                <button type="submit" class="btn btn-primary">SAVE</button>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Modal Edit -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <form id="updateForm">
+                    <div class="form-group mb-3">
+                        <label for="name_edit">Name:</label>
+                        <input required type="hidden" class="form-control" name="id" id="id_edit">
+                        <input required type="text" class="form-control" name="name" id="name_edit">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="email_edit">Email:</label>
+                        <input required type="text" class="form-control" name="email" id="email_edit">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="password_edit">Password:</label>
+                        <input type="password" class="form-control" name="password" id="password_edit">
+                        <span>Fill if need to change password.</span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="role_id_edit">Role:</label>
+                        <select required class="form-control" name="role_id" id="role_id_edit">
+                            <option selected disabled>- SELECT ROLE -</option>
+                            <% roles.forEach((value, index) => { %>
+                            <option value="<%= value.id %>"><%= value.name %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>
+                <button type="submit" class="btn btn-primary">SAVE</button>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <a href="" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal"><i data-feather="plus"></i> ADD</a>
+            </div>
+            <div class="card-body">
+                <table id="table-users" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach((value, index) => { %>
+                        <tr>
+                            <td><%= index+=1 %></td>
+                            <td><%= value.name %></td>
+                            <td><%= value.email %></td>
+                            <td>
+                                <% if(value.role_id == 1) { %>
+                                    <span class="badge bg-primary"><%= value.role_name %></span>
+                                <% } else if(value.role_id == 2) { %>
+                                    <span class="badge bg-success"><%= value.role_name %></span>
+                                <% } else if(value.role_id == 3) { %>
+                                    <span class="badge bg-danger"><%= value.role_name %></span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0)" id="btn-edit" data-id="<%= value.id %>" class="btn btn-primary btn-sm">EDIT</a>
+                                <a href="javascript:void(0)" id="btn-delete" data-id="<%= value.id %>" class="btn btn-danger btn-sm">DELETE</a>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
